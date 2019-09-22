@@ -35,22 +35,24 @@ unique_ptr<JsonObject> parse_dict(string::const_iterator& str) {
 }
 
 unique_ptr<JsonObject> parse_value(string::const_iterator& str) {
+    unique_ptr<JsonObject> res;
     switch(*str) {
         case '\"':
-            parse_string(str);
+            res = move(parse_string(str));
             break;
         case '[':
-            parse_array(str);
+            res = move(parse_array(str));
             break;
         case '{':
-            parse_dict(str);
+            res = move(parse_dict(str));
             break;
         case 't':
         case 'f':
-            parse_boolean(str);
+            res = move(parse_boolean(str));
             break;
 
     }
+    return res;
 }
 
 unique_ptr<JsonObject> parse_boolean(string::const_iterator& str) {

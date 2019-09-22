@@ -53,7 +53,7 @@ public:
         for (const auto& item : arr) {
             res += (item ? item->toString() : "") + "," ;
         }
-        res += "]\n";
+        res += "\n]";
 
         return res;
     }
