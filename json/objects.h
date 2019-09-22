@@ -28,6 +28,7 @@ public:
     value_type type;
     virtual string toString() const = 0;
     virtual ~JsonObject() {}
+
 };
 
 class JsonArray : public JsonObject {
@@ -50,8 +51,9 @@ public:
         string res;
 
         res += "[\n";
-        for (const auto& item : arr) {
-            res += (item ? item->toString() : "") + "," ;
+        for (size_t i = 0; i < arr.size(); i++) {
+            const auto& item = arr[i];
+            res += (item ? item->toString() : "") + (i < arr.size()-1 ? "," : "") ;
         }
         res += "\n]";
 
@@ -75,6 +77,22 @@ public:
     container_t& get() {
         return d;
     }
+
+    string toString() const {
+        string res;
+
+        res += "{\n";
+        auto pre_end_it = d.end();
+        --pre_end_it;
+        for (auto it = d.begin(); it != d.end(); ++it) {
+            const auto& item = *it;
+
+            res += item.first + ":" + item.second->toString() + (it != pre_end_it ? "," : "");
+        }
+        res += "\n}";
+
+        return res;
+    }
 };
 
 class JsonInt : public JsonObject {
@@ -90,18 +108,18 @@ class JsonBool : public JsonObject {
 };
 
 class JsonString : public JsonObject {
-
+private:
+    string str;
+public:
+    JsonString(string str) : JsonObject(value_type::string), str(move(str)) {}
+    string get() const {
+        return this->str;
+    }
+    string toString() const {
+        return this->get();
+    }
 };
 
 class JsonNull : public JsonObject {
 
 };
-
-unique_ptr<JsonObject> parse_json(string::const_iterator str);
-unique_ptr<JsonObject> parse_array(string::const_iterator& str);
-unique_ptr<JsonObject> parse_dict(string::const_iterator& str);
-unique_ptr<JsonObject> parse_value(string::const_iterator& str);
-unique_ptr<JsonObject> parse_boolean(string::const_iterator& str);
-unique_ptr<JsonObject> parse_float(string::const_iterator& str);
-unique_ptr<JsonObject> parse_integer(string::const_iterator& str);
-unique_ptr<JsonObject> parse_string(string::const_iterator& str);

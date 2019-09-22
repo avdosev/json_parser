@@ -2,7 +2,7 @@
 // Created by avdosev on 22.09.2019.
 //
 
-#include "json.h"
+#include "parsing.h"
 
 unique_ptr<JsonObject> parse_json(string::const_iterator str) {
     unique_ptr<JsonObject> res;
@@ -31,7 +31,15 @@ unique_ptr<JsonObject> parse_array(string::const_iterator& str) {
 }
 
 unique_ptr<JsonObject> parse_dict(string::const_iterator& str) {
-    return nullptr;
+    unique_ptr<JsonDict> aarr(new JsonDict);
+    ++str;
+    while(*str != '}') {
+        auto key = parse_string(str)->toString();
+        key = move(string(key.begin()+1, key.end()-1));
+        aarr->push(key, move(parse_value(str)));
+    }
+    ++str;
+    return unique_ptr<JsonObject>(move(aarr));
 }
 
 unique_ptr<JsonObject> parse_value(string::const_iterator& str) {
@@ -68,5 +76,11 @@ unique_ptr<JsonObject> parse_integer(string::const_iterator& str) {
 }
 
 unique_ptr<JsonObject> parse_string(string::const_iterator& str) {
-    return nullptr;
+    auto start_iterator = str;
+    do {
+        ++str;
+    } while(*str != '\"');
+    auto end_iterator = str;
+    ++str;
+    return new JsonString(string(start_iterator, end_iterator));
 }

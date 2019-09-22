@@ -12,9 +12,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="03c3490c-d79e-4046-9579-5ac5e5bbcc4d" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/json/objects.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/json/objects.h" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/json/parsing.cpp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/json/parsing.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/json.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/json.cpp" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/json.h" beforeDir="false" afterPath="$PROJECT_DIR$/json.h" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/CMakeLists.txt" beforeDir="false" afterPath="$PROJECT_DIR$/CMakeLists.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/json.cpp" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/json.h" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -64,7 +70,10 @@
       <option name="presentableId" value="Default" />
       <updated>1569139047981</updated>
       <workItem from="1569139050186" duration="4118000" />
-      <workItem from="1569149249075" duration="4873000" />
+      <workItem from="1569149249075" duration="5946000" />
+      <workItem from="1569166661767" duration="233000" />
+      <workItem from="1569167909215" duration="114000" />
+      <workItem from="1569169182185" duration="785000" />
     </task>
     <servers />
   </component>
@@ -83,16 +92,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/json.cpp</url>
-          <line>22</line>
-          <option name="timeStamp" value="10" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
