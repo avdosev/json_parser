@@ -15,8 +15,7 @@ using namespace std; // TODO пока так, но потом уберу
 enum class value_type {
     array,
     dict,
-    floating_point,
-    integer,
+    number,
     string,
     boolean,
     null
@@ -24,21 +23,15 @@ enum class value_type {
 
 class JsonObject {
 public:
-    JsonObject(value_type type) : type(type) {}
-    value_type type;
+    virtual value_type type() const = 0;
     virtual string toString() const = 0;
     virtual ~JsonObject() {}
-
 };
 
 class JsonArray : public JsonObject {
 private:
     vector<unique_ptr<JsonObject>> arr;
 public:
-    JsonArray() : JsonObject(value_type::array) {
-
-    }
-
     void push(unique_ptr<JsonObject> value) {
         arr.push_back(move(value));
     }
@@ -59,32 +52,28 @@ public:
 
         return res;
     }
+
+    value_type type() const {
+        return value_type::array;
+    }
 };
 
 class JsonDict : public JsonObject {
-private:
-    using container_t = map<string, unique_ptr<JsonObject>>;
-    container_t d;
 public:
-    JsonDict() : JsonObject(value_type::dict) {
-
-    }
+    using container_t = map<string, unique_ptr<JsonObject>>;
+    container_t value;
 
     void push(string key, unique_ptr<JsonObject> value) {
-        d.insert(make_pair(key, move(value)));
-    }
-
-    container_t& get() {
-        return d;
+        this->value.insert(make_pair(key, move(value)));
     }
 
     string toString() const {
         string res;
 
         res += "{\n";
-        auto pre_end_it = d.end();
+        auto pre_end_it = value.end();
         --pre_end_it;
-        for (auto it = d.begin(); it != d.end(); ++it) {
+        for (auto it = value.begin(); it != value.end(); ++it) {
             const auto& item = *it;
 
             res += item.first + ":" + item.second->toString() + (it != pre_end_it ? "," : "");
@@ -93,33 +82,69 @@ public:
 
         return res;
     }
+
+    value_type type() const {
+        return value_type::dict;
+    }
 };
 
-class JsonInt : public JsonObject {
+template<typename num_t>
+class JsonNumber : public JsonObject {
+public:
+    num_t value;
 
-};
+    JsonNumber(num_t value) : value(value) {}
 
-class JsonFloat : public JsonObject {
+    string toString() const {
+        return to_string(value);
+    }
 
+    value_type type() const {
+        return value_type::number;
+    }
 };
 
 class JsonBool : public JsonObject {
+public:
+    bool value;
+    JsonBool(bool value) : value(value) {
 
+    }
+
+    string toString() const {
+        return value ? "true" : "false";
+    }
+
+    value_type type() const {
+        return value_type::boolean;
+    }
 };
 
 class JsonString : public JsonObject {
-private:
-    string str;
 public:
-    JsonString(string str) : JsonObject(value_type::string), str(move(str)) {}
+    string value;
+    JsonString(string str) : value(move(str)) {}
     string get() const {
-        return this->str;
+        return this->value;
     }
     string toString() const {
         return this->get();
     }
+
+    value_type type() const {
+        return value_type::string;
+    }
 };
 
 class JsonNull : public JsonObject {
+public:
+    nullptr_t value = nullptr;
 
+    string toString() const {
+        return "null";
+    }
+
+    value_type type() const {
+        return value_type::null;
+    }
 };

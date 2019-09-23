@@ -8,7 +8,7 @@ using namespace std;
 
 
 int main() {
-    string json_str = "[[[[[[[[]]]]]]],[]]";
+    string json_str = "[[\"test\",\"test2\",true,false],[]]";
     string::const_iterator i = json_str.begin();
     auto p = parse_json(i);
     std::cout << p->toString() << std::endl;

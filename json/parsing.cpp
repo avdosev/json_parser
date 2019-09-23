@@ -64,7 +64,18 @@ unique_ptr<JsonObject> parse_value(string::const_iterator& str) {
 }
 
 unique_ptr<JsonObject> parse_boolean(string::const_iterator& str) {
-    return nullptr;
+    bool isTrue = *str == 't';
+    string test_str = isTrue ? "true" : "false";
+    for (auto it = test_str.begin(); it < test_str.end(); ++it) {
+        if (*str == *it)
+            ++str;
+        else
+            throw runtime_error("boolean parse error");
+    }
+    if (isalpha(*str )) {
+        throw runtime_error("boolean parse error");
+    }
+    return unique_ptr<JsonObject>(new JsonBool(isTrue));
 }
 
 unique_ptr<JsonObject> parse_float(string::const_iterator& str) {
@@ -80,7 +91,6 @@ unique_ptr<JsonObject> parse_string(string::const_iterator& str) {
     do {
         ++str;
     } while(*str != '\"');
-    auto end_iterator = str;
-    ++str;
-    return new JsonString(string(start_iterator, end_iterator));
+    auto end_iterator = ++str;
+    return unique_ptr<JsonObject>(new JsonString(string(start_iterator, end_iterator)));
 }
