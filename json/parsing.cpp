@@ -35,16 +35,25 @@ unique_ptr<JsonObject> parse_array(string::const_iterator& str) {
 }
 
 unique_ptr<JsonObject> parse_dict(string::const_iterator& str) {
-    unique_ptr<JsonDict> aarr(new JsonDict);
+    unique_ptr<JsonDict> dict(new JsonDict);
     ++str;
     while(*str != '}') {
+        skipSpaces(str);
         auto key = parse_string(str)->toString();
         key = move(string(key.begin()+1, key.end()-1));
-        aarr->push(key, move(parse_value(str)));
+        skipSpaces(str);
+        if (*str != ':')
+            throw runtime_error("dict parse error");
+        else
+            ++str;
+        skipSpaces(str);
+        dict->push(key, move(parse_value(str)));
+        skipSpaces(str);
+        if (*str == ',') ++str;
         skipSpaces(str);
     }
     ++str;
-    return unique_ptr<JsonObject>(move(aarr));
+    return unique_ptr<JsonObject>(move(dict));
 }
 
 unique_ptr<JsonObject> parse_value(string::const_iterator& str) {

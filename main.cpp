@@ -6,11 +6,18 @@
 
 using namespace std;
 
+map<string, string> testkeys{
+        {"array test", "[ [\"test\"   ,  \"test2\" , true , false ], [ null ] ]"},
+        {"dict test","{\"test\" : \"test_value\", \"next_test\": null}"}
+};
 
 int main() {
-    string json_str = "[ [\"test\"   ,  \"test2\" , true , false, null ], [  ] ]";
-    string::const_iterator i = json_str.begin();
-    auto p = parse_json(i);
-    std::cout << p->toString() << std::endl;
+    for (auto item : testkeys) {
+        string key_of_test = item.first, json_str = item.second;
+        auto i = json_str.begin();
+        auto p = parse_json(i);
+        cout << key_of_test << endl;
+        std::cout << p->toString() << std::endl;
+    }
     return 0;
 }

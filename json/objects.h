@@ -76,7 +76,7 @@ public:
         for (auto it = value.begin(); it != value.end(); ++it) {
             const auto& item = *it;
 
-            res += item.first + ":" + item.second->toString() + (it != pre_end_it ? "," : "");
+            res += '\"' + item.first + "\":" + item.second->toString() + (it != pre_end_it ? "," : "");
         }
         res += "\n}";
 
