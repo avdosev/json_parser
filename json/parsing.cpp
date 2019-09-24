@@ -64,7 +64,8 @@ unique_ptr<JsonObject> parse_value(string::const_iterator& str) {
         case 'f':
             res = move(parse_boolean(str));
             break;
-
+        case 'n':
+            res = move(parse_null(str));
     }
     return res;
 }
@@ -72,16 +73,39 @@ unique_ptr<JsonObject> parse_value(string::const_iterator& str) {
 unique_ptr<JsonObject> parse_boolean(string::const_iterator& str) {
     bool isTrue = *str == 't';
     string test_str = isTrue ? "true" : "false";
-    for (auto it = test_str.begin(); it < test_str.end(); ++it) {
+
+    auto it = test_str.begin();
+    for (; it < test_str.end(); ++it) {
         if (*str == *it)
             ++str;
         else
-            throw runtime_error("boolean parse error");
+            break;
     }
-    if (isalpha(*str )) {
+
+    if (it != test_str.end() || isalpha(*str )) {
         throw runtime_error("boolean parse error");
     }
+
     return unique_ptr<JsonObject>(new JsonBool(isTrue));
+}
+
+unique_ptr<JsonObject> parse_null(string::const_iterator& str) {
+    // тут как бы повтор кода, но как бы и не повтор так шо нормально
+    string test_str = "null";
+
+    auto it = test_str.begin();
+    for (; it < test_str.end(); ++it) {
+        if (*str == *it)
+            ++str;
+        else
+            break;
+    }
+
+    if (it != test_str.end() || isalpha(*str)) {
+        throw runtime_error("null parse error");
+    }
+
+    return unique_ptr<JsonObject>(new JsonNull);
 }
 
 unique_ptr<JsonObject> parse_float(string::const_iterator& str) {
