@@ -4,8 +4,11 @@
 
 #include "parsing.h"
 
+void skipSpaces(string::const_iterator& it);
+
 unique_ptr<JsonObject> parse_json(string::const_iterator str) {
     unique_ptr<JsonObject> res;
+    skipSpaces(str);
     switch(*str) {
         case '{':
             res = move(parse_dict(str));
@@ -24,6 +27,7 @@ unique_ptr<JsonObject> parse_array(string::const_iterator& str) {
     ++str;
     while(*str != ']') {
         arr->push(parse_value(str));
+        skipSpaces(str);
         if (*str == ',') ++str;
     }
     ++str;
@@ -37,6 +41,7 @@ unique_ptr<JsonObject> parse_dict(string::const_iterator& str) {
         auto key = parse_string(str)->toString();
         key = move(string(key.begin()+1, key.end()-1));
         aarr->push(key, move(parse_value(str)));
+        skipSpaces(str);
     }
     ++str;
     return unique_ptr<JsonObject>(move(aarr));
@@ -44,6 +49,7 @@ unique_ptr<JsonObject> parse_dict(string::const_iterator& str) {
 
 unique_ptr<JsonObject> parse_value(string::const_iterator& str) {
     unique_ptr<JsonObject> res;
+    skipSpaces(str);
     switch(*str) {
         case '\"':
             res = move(parse_string(str));
@@ -93,4 +99,14 @@ unique_ptr<JsonObject> parse_string(string::const_iterator& str) {
     } while(*str != '\"');
     auto end_iterator = ++str;
     return unique_ptr<JsonObject>(new JsonString(string(start_iterator, end_iterator)));
+}
+
+void skipSpaces(string::const_iterator& it) {
+    while (true) {
+        auto c = *it;
+        if (c == ' ' || c == '\t' || c == '\r' || c == '\n')
+            ++it;
+        else
+            break;
+    }
 }
