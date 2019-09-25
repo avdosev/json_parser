@@ -10,7 +10,7 @@
 #include <map>
 
 
-using namespace std; // TODO пока так, но потом уберу
+
 
 enum class value_type {
     array,
@@ -25,68 +25,35 @@ enum class value_type {
 class JsonObject {
 public:
     virtual value_type type() const = 0;
-    virtual string toString() const = 0;
+    virtual std::string toString() const = 0;
     virtual ~JsonObject() {}
 };
 
 class JsonArray : public JsonObject {
 private:
-    vector<unique_ptr<JsonObject>> arr;
+    using container_t = std::vector<std::shared_ptr<JsonObject>>;
+    container_t arr;
 public:
-    void push(unique_ptr<JsonObject> value) {
-        arr.push_back(move(value));
-    }
+    void push(std::unique_ptr<JsonObject> value);
 
-    vector<unique_ptr<JsonObject>>& get() {
+    container_t& get() {
         return arr;
     }
 
-    string toString() const {
-        string res;
-
-        res += "[\n";
-        for (size_t i = 0; i < arr.size(); i++) {
-            const auto& item = arr[i];
-            res += (item ? item->toString() : "") + (i < arr.size()-1 ? "," : "") ;
-        }
-        res += "\n]";
-
-        return res;
-    }
-
-    value_type type() const {
-        return value_type::array;
-    }
+    std::string toString() const;
+    value_type type() const;
 };
 
 class JsonDict : public JsonObject {
 public:
-    using container_t = map<string, unique_ptr<JsonObject>>;
+    using container_t = std::map<std::string, std::shared_ptr<JsonObject>>;
     container_t value;
 
-    void push(string key, unique_ptr<JsonObject> value) {
-        this->value.insert(make_pair(key, move(value)));
-    }
+    void push(std::string key, std::unique_ptr<JsonObject> value) ;
 
-    string toString() const {
-        string res;
+    std::string toString() const;
 
-        res += "{\n";
-        auto pre_end_it = value.end();
-        --pre_end_it;
-        for (auto it = value.begin(); it != value.end(); ++it) {
-            const auto& item = *it;
-
-            res += '\"' + item.first + "\":" + item.second->toString() + (it != pre_end_it ? "," : "");
-        }
-        res += "\n}";
-
-        return res;
-    }
-
-    value_type type() const {
-        return value_type::dict;
-    }
+    value_type type() const;
 };
 
 class JsonFloat : public JsonObject {
@@ -96,13 +63,9 @@ public:
 
     JsonFloat(num_t value) : value(value) {}
 
-    string toString() const {
-        return to_string(value);
-    }
+    std::string toString() const;
 
-    value_type type() const {
-        return value_type::floating_point;
-    }
+    value_type type() const;
 };
 
 class JsonInteger : public JsonObject {
@@ -112,56 +75,35 @@ public:
 
     JsonInteger(num_t value) : value(value) {}
 
-    string toString() const {
-        return to_string(value);
-    }
+    std::string toString() const;
 
-    value_type type() const {
-        return value_type::integer;
-    }
+    value_type type() const;
 };
 
 class JsonBool : public JsonObject {
 public:
     bool value;
-    JsonBool(bool value) : value(value) {
+    JsonBool(bool value) : value(value) {}
 
-    }
+    std::string toString() const;
 
-    string toString() const {
-        return value ? "true" : "false";
-    }
-
-    value_type type() const {
-        return value_type::boolean;
-    }
+    value_type type() const;
 };
 
 class JsonString : public JsonObject {
 public:
-    string value;
-    JsonString(string str) : value(move(str)) {}
-    string get() const {
-        return this->value;
-    }
-    string toString() const {
-        return this->get();
-    }
+    std::string value;
+    JsonString(std::string str) : value(move(str)) {}
 
-    value_type type() const {
-        return value_type::string;
-    }
+    std::string get() const;
+    std::string toString() const;
+    value_type type() const;
 };
 
 class JsonNull : public JsonObject {
 public:
     nullptr_t value = nullptr;
 
-    string toString() const {
-        return "null";
-    }
-
-    value_type type() const {
-        return value_type::null;
-    }
+    std::string toString() const;
+    value_type type() const;
 };

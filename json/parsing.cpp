@@ -4,6 +4,8 @@
 
 #include "parsing.h"
 
+using namespace std;
+
 void skipSpaces(string::const_iterator& it);
 
 unique_ptr<JsonObject> parse_json(string::const_iterator str) {

@@ -6,13 +6,13 @@
 
 #include "objects.h"
 
-unique_ptr<JsonObject> parse_json(string::const_iterator str);
-unique_ptr<JsonObject> parse_array(string::const_iterator& str);
-unique_ptr<JsonObject> parse_dict(string::const_iterator& str);
-unique_ptr<JsonObject> parse_value(string::const_iterator& str);
-unique_ptr<JsonObject> parse_boolean(string::const_iterator& str);
-unique_ptr<JsonObject> parse_null(string::const_iterator& str);
-unique_ptr<JsonObject> parse_number(string::const_iterator& str);
-unique_ptr<JsonObject> parse_float(string str);
-unique_ptr<JsonObject> parse_integer(string str);
-unique_ptr<JsonObject> parse_string(string::const_iterator& str);
+std::unique_ptr<JsonObject> parse_json(std::string::const_iterator str);
+std::unique_ptr<JsonObject> parse_array(std::string::const_iterator& str);
+std::unique_ptr<JsonObject> parse_dict(std::string::const_iterator& str);
+std::unique_ptr<JsonObject> parse_value(std::string::const_iterator& str);
+std::unique_ptr<JsonObject> parse_boolean(std::string::const_iterator& str);
+std::unique_ptr<JsonObject> parse_null(std::string::const_iterator& str);
+std::unique_ptr<JsonObject> parse_number(std::string::const_iterator& str);
+std::unique_ptr<JsonObject> parse_float(std::string str);
+std::unique_ptr<JsonObject> parse_integer(std::string str);
+std::unique_ptr<JsonObject> parse_string(std::string::const_iterator& str);

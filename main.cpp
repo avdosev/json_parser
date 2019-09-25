@@ -8,7 +8,7 @@ using namespace std;
 map<string, string> testkeys{
         {"array test", "[ [\"test\"   ,  \"test2\" , true , false ], [ null ] ]"},
         {"dict test","{\"test\" : \"test_value\", \"next_test\": null}"},
-        {"numbers test", "[ 1231, 4564, 456464, 4897546 ]"}
+        {"numbers test", "[ 1231, 4564, 456464, 4897546, 0.12315 ]"}
 };
 
 int main() {
