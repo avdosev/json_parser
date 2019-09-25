@@ -75,6 +75,22 @@ unique_ptr<JsonObject> parse_value(string::const_iterator& str) {
             break;
         case 'n':
             res = move(parse_null(str));
+            break;
+        case '0':
+        case '1':
+        case '2':
+        case '3':
+        case '4':
+        case '5':
+        case '6':
+        case '7':
+        case '8':
+        case '9':
+        case '-': // типо минусик
+            res = move(parse_number(str));
+            break;
+        default:
+            throw runtime_error("value parse error");
     }
     return res;
 }
@@ -117,12 +133,52 @@ unique_ptr<JsonObject> parse_null(string::const_iterator& str) {
     return unique_ptr<JsonObject>(new JsonNull);
 }
 
-unique_ptr<JsonObject> parse_float(string::const_iterator& str) {
-    return nullptr;
+unique_ptr<JsonObject> parse_number(string::const_iterator& it) {
+
+    bool isFloat = false;
+    auto start_it = it;
+    char c = *it; // stopgap for already consumed character
+    // integral part
+    while (c >= '0' && c <= '9')
+        c = *it++;
+
+    // fractional part
+    if (c == '.') {
+        isFloat = true;
+        c = *it++;
+        while (c >= '0' && c <= '9')
+            c = *it++;
+    }
+
+    // exponential part
+    if (c == 'e' || c == 'E') {
+        isFloat = true;
+        c = *it++;
+        if (c == '+' || c == '-')
+            c = *it++;
+        while (c >= '0' && c <= '9')
+            c = *it++;
+    }
+
+    string number_str(start_it, it);
+
+    unique_ptr<JsonObject> res;
+    if (isFloat)
+        res = move(parse_float(number_str));
+    else
+        res = move(parse_integer(number_str));
+
+    return res;
 }
 
-unique_ptr<JsonObject> parse_integer(string::const_iterator& str) {
-    return nullptr;
+unique_ptr<JsonObject> parse_float(string str) {
+    double num = stod(str);
+    return unique_ptr<JsonObject>(new JsonFloat(num));
+}
+
+unique_ptr<JsonObject> parse_integer(string str) {
+    long long int num = stoll(str);
+    return unique_ptr<JsonObject>(new JsonInteger(num));
 }
 
 unique_ptr<JsonObject> parse_string(string::const_iterator& str) {

@@ -15,7 +15,8 @@ using namespace std; // TODO пока так, но потом уберу
 enum class value_type {
     array,
     dict,
-    number,
+    floating_point,
+    integer,
     string,
     boolean,
     null
@@ -88,19 +89,35 @@ public:
     }
 };
 
-template<typename num_t>
-class JsonNumber : public JsonObject {
+class JsonFloat : public JsonObject {
 public:
+    using num_t = double;
     num_t value;
 
-    JsonNumber(num_t value) : value(value) {}
+    JsonFloat(num_t value) : value(value) {}
 
     string toString() const {
         return to_string(value);
     }
 
     value_type type() const {
-        return value_type::number;
+        return value_type::floating_point;
+    }
+};
+
+class JsonInteger : public JsonObject {
+public:
+    using num_t = long long int;
+    num_t value;
+
+    JsonInteger(num_t value) : value(value) {}
+
+    string toString() const {
+        return to_string(value);
+    }
+
+    value_type type() const {
+        return value_type::integer;
     }
 };
 

@@ -15,6 +15,7 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/json/objects.h" beforeDir="false" afterPath="$PROJECT_DIR$/json/objects.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/json/parsing.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/json/parsing.cpp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/json/parsing.h" beforeDir="false" afterPath="$PROJECT_DIR$/json/parsing.h" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/main.cpp" beforeDir="false" afterPath="$PROJECT_DIR$/main.cpp" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -34,6 +35,7 @@
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="settings.editor.selected.configurable" value="terminal" />
   </component>
   <component name="RunDashboard">
     <option name="ruleStates">
@@ -71,7 +73,9 @@
       <workItem from="1569169182185" duration="785000" />
       <workItem from="1569172477235" duration="1400000" />
       <workItem from="1569227217128" duration="1051000" />
-      <workItem from="1569332014830" duration="2543000" />
+      <workItem from="1569332014830" duration="2725000" />
+      <workItem from="1569337089323" duration="19000" />
+      <workItem from="1569418557500" duration="3003000" />
     </task>
     <servers />
   </component>
@@ -90,21 +94,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/main.cpp</url>
-          <line>17</line>
-          <option name="timeStamp" value="2" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="com.jetbrains.cidr.execution.debugger.OCBreakpointType">
-          <url>file://$PROJECT_DIR$/json/parsing.cpp</url>
-          <line>38</line>
-          <option name="timeStamp" value="3" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
