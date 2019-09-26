@@ -32,8 +32,8 @@ public:
 class JsonArray : public JsonObject {
 private:
     using container_t = std::vector<std::shared_ptr<JsonObject>>;
-    container_t arr;
 public:
+    container_t arr;
     void push(std::unique_ptr<JsonObject> value);
 
     container_t& get() {

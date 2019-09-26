@@ -6,12 +6,52 @@
 
 #include "parsing.h"
 
+json::json(std::shared_ptr<JsonObject> vl) : value(vl) {
+
+}
+
 json::array_t json::asArray() {
-    return json::array_t();
+    auto vt = value->type();
+
+    if (vt != value_type::dict && vt != value_type::array)
+        throw DynamicConvertException("can`t convert to array");
+
+    array_t arr;
+    if(vt == value_type::array) {
+        auto ja = dynamic_cast<JsonArray&>(*value);
+        auto it_end = ja.get().end(), it_begin = ja.get().begin();
+        arr.reserve(ja.get().size());
+        for (auto it = it_begin; it < it_end; it++) {
+            arr.push_back(*it);
+        }
+    } else {
+        auto jd = dynamic_cast<JsonDict&>(*value);
+        auto it_end = jd.value.end(), it_begin = jd.value.begin();
+        arr.reserve(jd.value.size());
+        for (auto it = it_begin; it != it_end; it++) {
+            arr.push_back(it->second);
+        }
+    }
+
+    return arr;
 }
 
 json::dict_t json::asDict() {
-    return json::dict_t();
+    auto vt = value->type();
+
+    if (vt != value_type::dict)
+        throw DynamicConvertException("can`t convert to dict");
+
+
+    auto jd = dynamic_cast<JsonDict&>(*value);
+    auto it_end = jd.value.end(), it_begin = jd.value.begin();
+    dict_t dict;
+
+    for (const auto& pa : jd.value) {
+        dict.insert(std::make_pair(pa.first, json(pa.second)));
+    }
+
+    return dict;
 }
 
 json::float_t json::asFloat() {

@@ -10,10 +10,11 @@
 #include "objects.h"
 
 class json {
-protected:
-    std::shared_ptr<JsonObject> value;
+public:
     json(std::shared_ptr<JsonObject> vl);
     json() = default;
+protected:
+    std::shared_ptr<JsonObject> value;
 public:
     using dict_t = std::map<std::string, json>;
     using array_t = std::vector<json>;

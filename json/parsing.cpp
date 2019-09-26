@@ -144,6 +144,7 @@ unique_ptr<JsonObject> parse_number(string::const_iterator& it) {
     while (c >= '0' && c <= '9')
         c = *it++;
 
+
     // fractional part
     if (c == '.') {
         isFloat = true;
@@ -169,7 +170,7 @@ unique_ptr<JsonObject> parse_number(string::const_iterator& it) {
         res = move(parse_float(number_str));
     else
         res = move(parse_integer(number_str));
-
+    --it;
     return res;
 }
 
