@@ -102,8 +102,6 @@ public:
 
 class JsonNull : public JsonObject {
 public:
-    nullptr_t value = nullptr;
-
     std::string toString() const;
     value_type type() const;
 };
