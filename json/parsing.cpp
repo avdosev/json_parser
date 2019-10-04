@@ -141,7 +141,7 @@ unique_ptr<JsonObject> parse_number(string::const_iterator& it) {
     auto start_it = it;
     char c = *it; // stopgap for already consumed character
     // integral part
-    while (c >= '0' && c <= '9')
+    while (isdigit(c))
         c = *it++;
 
 
@@ -149,7 +149,7 @@ unique_ptr<JsonObject> parse_number(string::const_iterator& it) {
     if (c == '.') {
         isFloat = true;
         c = *it++;
-        while (c >= '0' && c <= '9')
+        while (isdigit(c))
             c = *it++;
     }
 
@@ -159,7 +159,7 @@ unique_ptr<JsonObject> parse_number(string::const_iterator& it) {
         c = *it++;
         if (c == '+' || c == '-')
             c = *it++;
-        while (c >= '0' && c <= '9')
+        while (isdigit(c))
             c = *it++;
     }
 
@@ -196,7 +196,7 @@ unique_ptr<JsonObject> parse_string(string::const_iterator& str) {
 void skipSpaces(string::const_iterator& it) {
     while (true) {
         auto c = *it;
-        if (c == ' ' || c == '\t' || c == '\r' || c == '\n')
+        if (isspace(c))
             ++it;
         else
             break;
